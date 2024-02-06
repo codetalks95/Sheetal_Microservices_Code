@@ -1,9 +1,7 @@
 package com.sheetal.productservice.Controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.sheetal.productservice.Entity.Employee;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProductController {
@@ -16,5 +14,10 @@ public class ProductController {
     @PostMapping("/message/{message}")
     public String welcomeToMicroservice(@PathVariable String message) {
         return "Welcome to" + " " + message;
+    }
+
+    @PostMapping("/getEmployeeInformation")
+    public String getEmployeeInformation(@RequestBody Employee employee) {
+        return "Welcome" + " " + employee.getName() + " " + "having age less then" + " " + employee.getAge() + ".";
     }
 }
