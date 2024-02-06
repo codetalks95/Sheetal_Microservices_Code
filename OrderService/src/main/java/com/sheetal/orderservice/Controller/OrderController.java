@@ -4,6 +4,8 @@ import com.sheetal.orderservice.Entity.Employee;
 import com.sheetal.orderservice.FeignClient.FeignClientRestCall;
 import com.sheetal.orderservice.RestTemplate.RestTemplateConfiguration;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,12 +47,24 @@ public class OrderController {
     }
 
     @PostMapping("/getEmployeeInfoFromRestTemplateFaultTolerance")
-    @CircuitBreaker(name = "Fault Tolerance", fallbackMethod = "faultTolerance")
+    @CircuitBreaker(name = "getEmployeeTolerant", fallbackMethod = "faultTolerance")
     public String getEmployeeInfoFromRestTemplateFaultTolerance(@RequestBody Employee employee) {
-        throw new RuntimeException();
+        return restTemplateConfiguration.getEmployeeInformation(employee);
     }
 
     public String faultTolerance(Throwable throwable) {
         return "Hey Dude" + " " + "the service is down please come back Later or Give it a Retry!!";
+    }
+
+    @PostMapping("/getEmployeeInfoFromRestTemplateFaultToleranceLimit")
+    @RateLimiter(name = "getMessageRateLimit", fallbackMethod = "faultTolerance")
+    public String getEmployeeInfoFromRestTemplateFaultToleranceLimit(@RequestBody Employee employee) {
+        return restTemplateConfiguration.getEmployeeInformation(employee);
+    }
+
+    @PostMapping("/getEmployeeInfoFromRestTemplateFaultToleranceRetry")
+    @Retry(name = "getEmployeeRetry", fallbackMethod = "faultTolerance")
+    public String getEmployeeInfoFromRestTemplateFaultToleranceRetry(@RequestBody Employee employee) {
+        return restTemplateConfiguration.getEmployeeInformation(employee);
     }
 }
