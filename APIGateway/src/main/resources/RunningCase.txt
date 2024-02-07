@@ -1,0 +1,13 @@
+For calling the Product Services you need to call something like this :-
+where 8082 is the port number for API-Gateway and /products/** is the predicate what
+we have added in the application.properties and the same is added as RequestMapping
+in Product-Service.
+
+http://localhost:8082/products/welcome
+
+For calling the Order Services you need to call something like this :-
+where 8082 is the port number for API-Gateway and /orders/** is the predicate what
+we have added in the application.properties and the same is added as RequestMapping
+in Order-Service.
+
+http://localhost:8082/orders/getMessage
