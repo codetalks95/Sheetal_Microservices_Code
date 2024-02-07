@@ -24,6 +24,7 @@ public class OrderController {
 
     @GetMapping("/getMessage")
     public String getMessage() {
+        System.out.println("API GATEWAY IS CALLING ME:-");
         return feignClientRestCall.welcomeToMicroservicesCode();
     }
 
